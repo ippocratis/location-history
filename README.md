@@ -134,3 +134,5 @@ Or
   
 - Handle reverse proxy and SSL certs mtls in your webserver if you plan to expose the app outside your localhost.
   
+![](media/search_popup.png) | ![](media/timeline.png)
+![](media/map_route.png)
