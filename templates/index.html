@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map and Timeline</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Prevent scrolling */
+        }
+        #controls {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px; /* Reduced margin to give more space to the timeline */
+        }
+        .search-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        #search-input {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            outline: none;
+            max-width: 100%;
+        }
+        .date-controls {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .date-controls button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #000;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            box-shadow: none;
+            margin: 0 5px;
+        }
+        .date-controls #select-date {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #fff;
+            color: #000;
+            transition: background-color 0.3s ease;
+            margin: 0 5px;
+        }
+        .date-controls #select-date:hover {
+            background-color: #f0f0f0;
+        }
+        #map-container {
+            width: 100%;
+            height: 50%; /* Increased to 50% of the screen height */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px; /* Reduced margin to give more space to the timeline */
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        #timeline {
+            width: 100%;
+            max-width: 800px;
+            height: 35%; /* Increased to 35% of the screen height */
+            overflow-y: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            margin-bottom: 10px; /* Reduced margin to give more space to the timeline */
+        }
+        .timeline-item {
+            cursor: pointer;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .timeline-item:hover {
+            background-color: #e0e0e0;
+        }
+        .timeline-item p {
+            margin: 5px 0;
+            color: #333;
+            font-size: 14px;
+        }
+        #back-to-routes {
+            display: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #000;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            box-shadow: none;
+            margin: 0 5px;
+        }
+        #back-to-routes:hover {
+            background-color: #f0f0f0;
+        }
+        .arrow-icon {
+    text-align: center;
+    line-height: 1;
+          }
+        @media (max-width: 768px) {
+            #controls {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            .date-controls {
+                flex-direction: row;
+            }
+            .date-controls button {
+                font-size: 14px;
+                padding: 8px;
+            }
+            #search-input {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+    #search-results-popup {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #search-results-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 800px;
+        border-radius: 8px;
+        position: relative;
+    }
+
+    #close-search-results {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    #close-search-results:hover,
+    #close-search-results:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search locations...">
+      <button id="view-search-results">Search</button>
+    </div>
+        <div class="date-controls">
+            <button id="prev-day" title="Previous Day">&lt;</button>
+            <input type="date" id="date-picker">
+            <button id="next-day" title="Next Day">&gt;</button>
+            <button id="back-to-routes" title="Back to Routes">&lt; Back</button>
+        </div>
+    </div>
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+    <div id="timeline"></div>
+    <div id="search-results-popup" style="display: none;">
+    <div id="search-results-content">
+        <span id="close-search-results">&times;</span>
+        <h2>Search Results</h2>
+        <div id="search-results-list"></div>
+    </div>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Initialize Leaflet map
+        var map = L.map('map').setView([0, 0], 3); // Set initial view to world map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to clear existing markers and polyline on the map
+        function clearMap() {
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                    map.removeLayer(layer);
+                }
+            });
+        }
+
+        // Function to add markers and polyline for a route without auto pin popup
+        function displayRoute(route) {
+    clearMap();
+    var markers = [];
+    var latlngs = [];
+
+    route.forEach(function(location, index) {
+        // Create a marker without opening a popup
+        var marker = L.marker([location.lat, location.lon]).addTo(map);
+        marker.bindPopup(`<b>${location.address}</b><br>Date: ${location.timestamp}<br>${location.display_name}`);
+
+        // Add click event listener to open popup on click
+        marker.on('click', function() {
+            marker.openPopup();
+        });
+
+        markers.push(marker);
+
+        // Add current latlng to latlngs array
+        latlngs.push([location.lat, location.lon]);
+
+        // Add arrow markers between consecutive points (excluding the last point)
+        if (index < route.length - 1) {
+            var nextLocation = route[index + 1];
+
+            // Calculate direction
+            var direction = calculateDirection(location.lat, location.lon, nextLocation.lat, nextLocation.lon);
+
+            // Choose FontAwesome icon based on direction
+            var iconClass;
+            switch (direction) {
+                case 'N':
+                    iconClass = 'fas fa-arrow-up';
+                    break;
+                case 'S':
+                    iconClass = 'fas fa-arrow-down';
+                    break;
+                case 'E':
+                    iconClass = 'fas fa-arrow-right';
+                    break;
+                case 'W':
+                    iconClass = 'fas fa-arrow-left';
+                    break;
+            }
+
+            // Create an icon based on FontAwesome
+            var arrowIcon = L.divIcon({
+                className: 'arrow-icon',
+                html: `<i class="${iconClass}" style="color: blue;"></i>`,
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            });
+
+            // Add arrow marker with FontAwesome icon
+            var arrowMarker = L.marker([location.lat, location.lon], { icon: arrowIcon }).addTo(map);
+        }
+    });
+
+    // Draw the main polyline
+    var polyline = L.polyline(latlngs, { color: 'blue' }).addTo(map);
+    map.fitBounds(polyline.getBounds());
+}
+
+// Function to expand route and show all locations as timeline entries
+function expandRoute(route) {
+    var timeline = document.getElementById('timeline');
+    var routeItems = [];
+    route.forEach(function(location) {
+        var locationDate = new Date(location.timestamp).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' });
+        
+        // Extract the street name from the address field
+        var streetName = parseStreetName(location.address);
+
+        var routeItem = document.createElement('div');
+        routeItem.classList.add('timeline-item');
+        routeItem.innerHTML = `
+            <p>${locationDate} - ${streetName}</p>
+        `;
+        routeItem.addEventListener('click', function() {
+            map.setView([location.lat, location.lon], 14);
+            // Find the corresponding marker and open its popup
+            markers.forEach(marker => {
+                if (marker.getLatLng().lat === location.lat && marker.getLatLng().lng === location.lon) {
+                    marker.openPopup();
+                }
+            });
+        });
+        routeItems.push(routeItem);
+    });
+    timeline.innerHTML = ''; // Clear existing timeline
+    routeItems.forEach(function(item) {
+        timeline.appendChild(item);
+    });
+
+    // Hide the date navigation buttons and show the back button
+    document.getElementById('prev-day').style.display = 'none';
+    document.getElementById('next-day').style.display = 'none';
+    document.getElementById('back-to-routes').style.display = 'inline-block';
+}
+
+// Function to calculate direction between two points
+function calculateDirection(lat1, lon1, lat2, lon2) {
+    var dLat = lat2 - lat1;
+    var dLon = lon1 - lon2; // Inverted to get proper direction (East-West)
+    var absLat = Math.abs(dLat);
+    var absLon = Math.abs(dLon);
+
+    if (absLat > absLon) {
+        // Vertical direction
+        if (dLat > 0) {
+            return 'N'; // North
+        } else {
+            return 'S'; // South
+        }
+    } else {
+        // Horizontal direction
+        if (dLon > 0) {
+            return 'E'; // East
+        } else {
+            return 'W'; // West
+        }
+    }
+}
+        // Function to update timeline with routes
+        
+        // Function to update timeline with routes
+function updateTimeline(routes) {
+    var timeline = document.getElementById('timeline');
+    timeline.innerHTML = '';
+    routes.forEach(function(route, index) {
+        var routeItem = document.createElement('div');
+        routeItem.classList.add('timeline-item');
+        var startDate = new Date(route[0].timestamp).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' });
+        var endDate = new Date(route[route.length - 1].timestamp).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' });
+        routeItem.innerHTML = `
+            <p>Route from ${startDate} to ${endDate}</p>
+        `;
+        routeItem.addEventListener('click', function() {
+            displayRoute(route);
+            expandRoute(route);
+        });
+        timeline.appendChild(routeItem);
+    });
+
+    // Automatically zoom to the first route's initial location
+    if (routes.length > 0) {
+        zoomOnFirstRoute(routes[0]);
+    }
+}
+        
+        
+        
+        
+        
+
+        // Function to zoom on the first route's initial location
+        function zoomOnFirstRoute(route) {
+            if (route.length > 0) {
+                var firstLocation = route[0];
+                map.setView([firstLocation.lat, firstLocation.lon], 14);
+            }
+        }
+
+        // Function to expand route and show all locations as timeline entries
+        function expandRoute(route) {
+            var timeline = document.getElementById('timeline');
+            var routeItems = [];
+            route.forEach(function(location) {
+                var locationDate = new Date(location.timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+                
+                // Extract the street name from the address field
+                var streetName = parseStreetName(location.address);
+
+                var routeItem = document.createElement('div');
+                routeItem.classList.add('timeline-item');
+                routeItem.innerHTML = `
+                    <p>${locationDate} - ${streetName}</p>
+                `;
+                routeItem.addEventListener('click', function() {
+                    map.setView([location.lat, location.lon], 14);
+                    var marker = L.marker([location.lat, location.lon]).addTo(map);
+                    marker.bindPopup(`<b>${location.address}</b><br>Date: ${location.timestamp}<br>${location.display_name}`).openPopup();
+                });
+                routeItems.push(routeItem);
+            });
+            timeline.innerHTML = ''; // Clear existing timeline
+            routeItems.forEach(function(item) {
+                timeline.appendChild(item);
+            });
+
+            // Hide the date navigation buttons and show the back button
+            document.getElementById('prev-day').style.display = 'none';
+            document.getElementById('next-day').style.display = 'none';
+            document.getElementById('back-to-routes').style.display = 'inline-block';
+        }
+
+        // Function to collapse route and show summarized timeline entries
+        function collapseRoute() {
+            var date = document.getElementById('date-picker').value;
+            var searchTerm = document.getElementById('search-input').value;
+            fetchLocations(date, searchTerm);
+
+            // Hide the back button and show the normal date navigation buttons
+            document.getElementById('prev-day').style.display = 'inline-block';
+            document.getElementById('next-day').style.display = 'inline-block';
+            document.getElementById('back-to-routes').style.display = 'none';
+        }
+
+        // Event listener for the back arrow button to collapse the route view
+        document.getElementById('back-to-routes').addEventListener('click', function() {
+            collapseRoute();
+        });
+
+        // Fetch locations based on selected date and search term
+        function fetchLocations(date, searchTerm) {
+            fetch(`/get_locations?date=${date}`)
+                .then(response => response.json())
+                .then(locations => {
+                    // Filter locations by search term if provided
+                    if (searchTerm) {
+                        locations = locations.filter(location => location.address.toLowerCase().includes(searchTerm.toLowerCase()));
+                    }
+
+                    var groupedLocations = groupLocationsByRoute(locations);
+                    updateTimeline(groupedLocations);
+                })
+                .catch(error => console.error('Error fetching locations:', error));
+        }
+
+        // Group locations by route based on a time threshold (e.g., 30 minutes)
+        function groupLocationsByRoute(locations) {
+            var routes = [];
+            var currentRoute = [];
+            var previousTimestamp = null;
+            var thresholdMinutes = 30;
+            locations.forEach(function(location) {
+                var timestamp = new Date(location.timestamp);
+                if (previousTimestamp && (timestamp - previousTimestamp) / (1000 * 60) > thresholdMinutes) {
+                    routes.push(currentRoute);
+                    currentRoute = [];
+                }
+                currentRoute.push(location);
+                previousTimestamp = timestamp;
+            });
+            if (currentRoute.length > 0) {
+                routes.push(currentRoute);
+            }
+            return routes;
+        }
+
+
+
+
+    // Function to display search results in the popup
+    function displaySearchResults(routes) {
+        var searchResultsList = document.getElementById('search-results-list');
+        searchResultsList.innerHTML = '';
+
+        if (routes.length === 0) {
+            searchResultsList.innerHTML = '<p>No results found.</p>';
+        } else {
+            routes.forEach(route => {
+                var routeItem = document.createElement('div');
+                routeItem.classList.add('timeline-item');
+                var startDate = new Date(route[0].timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+                var endDate = new Date(route[route.length - 1].timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+                routeItem.innerHTML = `
+                    <p>Route from ${startDate} to ${endDate}</p>
+                `;
+                routeItem.addEventListener('click', function() {
+                    displayRoute(route);
+                    expandRoute(route);
+                    document.getElementById('search-results-popup').style.display = 'none'; // Close the popup
+                });
+                searchResultsList.appendChild(routeItem);
+            });
+        }
+    }
+
+    // Event listener for the "View Search Results" button
+    document.getElementById('view-search-results').addEventListener('click', function() {
+        showSearchResultsPopup();
+    });
+
+    // Event listener for closing the search results popup
+    document.getElementById('close-search-results').addEventListener('click', function() {
+        document.getElementById('search-results-popup').style.display = 'none';
+    });
+
+    // Function to show the search results popup
+    function showSearchResultsPopup() {
+        var searchTerm = document.getElementById('search-input').value;
+        fetch(`/search_locations?searchTerm=${searchTerm}`)
+            .then(response => response.json())
+            .then(routes => {
+                displaySearchResults(routes);
+                document.getElementById('search-results-popup').style.display = 'flex';
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+    }
+
+    // Fetch locations based on selected date and search term
+    function fetchLocations(date, searchTerm) {
+        fetch(`/get_locations?date=${date}`)
+            .then(response => response.json())
+            .then(locations => {
+                // Group locations into routes
+                var groupedLocations = groupLocationsByRoute(locations);
+                // Filter routes by search term if provided
+                if (searchTerm) {
+                    groupedLocations = groupedLocations.filter(route => 
+                        route.some(location => location.address.toLowerCase().includes(searchTerm.toLowerCase()))
+                    );
+                }
+                updateTimeline(groupedLocations);
+            })
+            .catch(error => console.error('Error fetching locations:', error));
+    }
+
+    // Group locations by route based on a time threshold (e.g., 30 minutes)
+    function groupLocationsByRoute(locations) {
+        var routes = [];
+        var currentRoute = [];
+        var previousTimestamp = null;
+        var thresholdMinutes = 30;
+        locations.forEach(function(location) {
+            var timestamp = new Date(location.timestamp);
+            if (previousTimestamp && (timestamp - previousTimestamp) / (1000 * 60) > thresholdMinutes) {
+                routes.push(currentRoute);
+                currentRoute = [];
+            }
+            currentRoute.push(location);
+            previousTimestamp = timestamp;
+        });
+        if (currentRoute.length > 0) {
+            routes.push(currentRoute);
+        }
+        return routes;
+    }
+
+
+
+
+
+
+
+
+
+        // Event listener for the previous day button
+        document.getElementById('prev-day').addEventListener('click', function() {
+            var datePicker = document.getElementById('date-picker');
+            var date = new Date(datePicker.value);
+            date.setDate(date.getDate() - 1);
+            datePicker.value = date.toISOString().split('T')[0];
+            fetchLocations(datePicker.value, document.getElementById('search-input').value);
+        });
+
+        // Event listener for the next day button
+        document.getElementById('next-day').addEventListener('click', function() {
+            var datePicker = document.getElementById('date-picker');
+            var date = new Date(datePicker.value);
+            date.setDate(date.getDate() + 1);
+            datePicker.value = date.toISOString().split('T')[0];
+            fetchLocations(datePicker.value, document.getElementById('search-input').value);
+        });
+
+        // Event listener for date picker change
+        document.getElementById('date-picker').addEventListener('change', function() {
+            var date = document.getElementById('date-picker').value;
+            var searchTerm = document.getElementById('search-input').value;
+            fetchLocations(date, searchTerm);
+        });
+
+        // Set initial date picker value to today
+        document.getElementById('date-picker').value = new Date().toISOString().split('T')[0];
+        // Fetch initial locations
+        fetchLocations(document.getElementById('date-picker').value, '');
+
+        // Function to parse street name from the address field
+        function parseStreetName(address) {
+            // Assuming address is in the format: "Street, City, Region, Country, Postal Code"
+            var parts = address.split(', ');
+            if (parts.length > 0) {
+                return parts[0]; // Return the first part as street name
+            } else {
+                return address; // Return full address if parsing fails
+            }
+        }
+    </script>
+</body>
+</html>
