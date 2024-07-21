@@ -27,7 +27,7 @@ def groupLocationsByRoute(locations):
     
     return routes
 
-# Existing endpoint to fetch locations based on selected date
+# Endpoint to fetch locations based on selected date
 @app.route('/get_locations')
 def get_locations():
     date = request.args.get('date')
@@ -51,15 +51,29 @@ def search_locations():
             grouped_routes = groupLocationsByRoute(locations)
             
             # Filter routes by search term
-            filtered_routes = [route for route in grouped_routes if any(searchTerm.lower() in loc.get('address', '').lower() for loc in route)]
+            filtered_routes = [
+                route for route in grouped_routes 
+                if any(
+                    searchTerm.lower() in (loc.get('address', '') or '').lower() or 
+                    any(
+                        searchTerm.lower() in (poi.get('tags', {}).get('name', '') or '').lower() or 
+                        searchTerm.lower() in (poi.get('tags', {}).get('amenity', '') or '').lower()
+                        for poi in loc.get('pois', [])
+                    )
+                    for loc in route
+                )
+            ]
             
             return jsonify(filtered_routes)
     except FileNotFoundError:
         return jsonify([])
+
+
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(host='0.0.0.0')
