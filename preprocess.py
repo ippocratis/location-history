@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from datetime import datetime
+import overpy
 
 # Function to reverse geocode using OpenStreetMap Nominatim
 def reverse_geocode(lat, lon):
@@ -37,6 +38,49 @@ def lookup_address(query):
         if data:
             return data[0].get('display_name', 'Unknown location')
     return None
+
+# Function to get POIs using Overpass API
+def get_pois(lat, lon, radius=30):
+    api = overpy.Overpass()
+    query = f"""
+    [out:json];
+    (
+      node["amenity"](around:{radius},{lat},{lon});
+      way["amenity"](around:{radius},{lat},{lon});
+      relation["amenity"](around:{radius},{lat},{lon});
+    );
+    out center;
+    """
+    result = api.query(query)
+    pois = []
+    for node in result.nodes:
+        if node.tags.get('amenity') != 'bench':  # Exclude benches
+            pois.append({
+                'type': 'node',
+                'id': node.id,
+                'lat': node.lat,
+                'lon': node.lon,
+                'tags': node.tags
+            })
+    for way in result.ways:
+        if way.tags.get('amenity') != 'bench':  # Exclude benches
+            pois.append({
+                'type': 'way',
+                'id': way.id,
+                'center_lat': way.center_lat,
+                'center_lon': way.center_lon,
+                'tags': way.tags
+            })
+    for relation in result.relations:
+        if relation.tags.get('amenity') != 'bench':  # Exclude benches
+            pois.append({
+                'type': 'relation',
+                'id': relation.id,
+                'center_lat': relation.center_lat,
+                'center_lon': relation.center_lon,
+                'tags': relation.tags
+            })
+    return pois
 
 # Function to process .rec files
 def process_files():
@@ -78,12 +122,17 @@ def process_files():
                         if not address and 'address_query' in location:
                             address = lookup_address(location['address_query'])
                         location['address'] = address
+
+                        # Get POIs
+                        pois = get_pois(location['lat'], location['lon'])
+                        location['pois'] = pois
+
                     location['timestamp'] = datetime.fromtimestamp(location['tst']).isoformat()
                     processed_locations.append(location)
                 except (ValueError, KeyError) as e:
                     print(f"Skipping line due to error: {e}")
                     continue
-        
+
         # Mark this file as processed except the last file
         if filename != rec_files[-1]:
             processed_files.add(filename)
