@@ -1,6 +1,6 @@
 # **Location History**
 
-"Location history" aims to be a location history visualizer that offers search (city, region, state, address,postal code but also amenities and amenity named aka POIs),a date picker,day navigation arrows, route grouping and a map to visualize routes and location pins..
+"Location history" aims to be a location history visualizer that offers search (city, region, state, address,postal code but also amenities and amenity names aka POIs),a date picker,day navigation arrows, route grouping and a map to visualize routes and location pins..
 
 ## Backend
 
