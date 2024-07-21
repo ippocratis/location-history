@@ -29,6 +29,7 @@ The endpoint /search_locations accepts a searchTerm parameter.
 It reads processed_locations.json to get the list of locations.
 It uses groupLocationsByRoute to group all locations into routes.
 It filters the routes to include only those where any location's address contains the search term (case-insensitive).
+Filters routes where any location or its POIs (Points of Interest) contain the search term in their address, name, or amenity tags.
 
 - Homepage Route:
 
@@ -67,6 +68,13 @@ Functionality: Sends a GET request to the Nominatim reverse geocoding API to con
 Input: Address query (query).
 Output: Address as a string.
 Functionality: Sends a GET request to the Nominatim search API to find the address based on a search query.
+
+
+- get_pois(lat, lon, radius=30):
+
+Uses the Overpass API to fetch Points of Interest (POIs) around a specified latitude and longitude within a given radius.
+Constructs a query to retrieve nodes, ways, and relations tagged as amenities, excluding benches.
+Returns a list of POIs with their details.
 
 ###  Process Files Function:
 
