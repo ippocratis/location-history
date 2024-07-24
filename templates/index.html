@@ -404,39 +404,6 @@ function updateTimeline(routes) {
             }
         }
 
-        // Function to expand route and show all locations as timeline entries
-        function expandRoute(route) {
-            var timeline = document.getElementById('timeline');
-            var routeItems = [];
-            route.forEach(function(location) {
-                var locationDate = new Date(location.timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
-                
-                // Extract the street name from the address field
-                var streetName = parseStreetName(location.address);
-
-                var routeItem = document.createElement('div');
-                routeItem.classList.add('timeline-item');
-                routeItem.innerHTML = `
-                    <p>${locationDate} - ${streetName}</p>
-                `;
-                routeItem.addEventListener('click', function() {
-                    map.setView([location.lat, location.lon], 14);
-                    var marker = L.marker([location.lat, location.lon]).addTo(map);
-                    marker.bindPopup(`<b>${location.address}</b><br>Date: ${location.timestamp}<br>${location.display_name}`).openPopup();
-                });
-                routeItems.push(routeItem);
-            });
-            timeline.innerHTML = ''; // Clear existing timeline
-            routeItems.forEach(function(item) {
-                timeline.appendChild(item);
-            });
-
-            // Hide the date navigation buttons and show the back button
-            document.getElementById('prev-day').style.display = 'none';
-            document.getElementById('next-day').style.display = 'none';
-            document.getElementById('back-to-routes').style.display = 'inline-block';
-        }
-
         // Function to collapse route and show summarized timeline entries
         function collapseRoute() {
             var date = document.getElementById('date-picker').value;
@@ -453,22 +420,6 @@ function updateTimeline(routes) {
         document.getElementById('back-to-routes').addEventListener('click', function() {
             collapseRoute();
         });
-
-        // Fetch locations based on selected date and search term
-        function fetchLocations(date, searchTerm) {
-            fetch(`/get_locations?date=${date}`)
-                .then(response => response.json())
-                .then(locations => {
-                    // Filter locations by search term if provided
-                    if (searchTerm) {
-                        locations = locations.filter(location => location.address.toLowerCase().includes(searchTerm.toLowerCase()));
-                    }
-
-                    var groupedLocations = groupLocationsByRoute(locations);
-                    updateTimeline(groupedLocations);
-                })
-                .catch(error => console.error('Error fetching locations:', error));
-        }
 
         // Group locations by route based on a time threshold (e.g., 30 minutes)
         function groupLocationsByRoute(locations) {
@@ -559,35 +510,6 @@ function updateTimeline(routes) {
             })
             .catch(error => console.error('Error fetching locations:', error));
     }
-
-    // Group locations by route based on a time threshold (e.g., 30 minutes)
-    function groupLocationsByRoute(locations) {
-        var routes = [];
-        var currentRoute = [];
-        var previousTimestamp = null;
-        var thresholdMinutes = 30;
-        locations.forEach(function(location) {
-            var timestamp = new Date(location.timestamp);
-            if (previousTimestamp && (timestamp - previousTimestamp) / (1000 * 60) > thresholdMinutes) {
-                routes.push(currentRoute);
-                currentRoute = [];
-            }
-            currentRoute.push(location);
-            previousTimestamp = timestamp;
-        });
-        if (currentRoute.length > 0) {
-            routes.push(currentRoute);
-        }
-        return routes;
-    }
-
-
-
-
-
-
-
-
 
         // Event listener for the previous day button
         document.getElementById('prev-day').addEventListener('click', function() {
