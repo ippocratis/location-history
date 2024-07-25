@@ -266,27 +266,37 @@
             var markers = [];
             var latlngs = [];
             var searchTerm = document.getElementById('search-input').value.toLowerCase();
+            
+            // Determine whether any search term is present
+    var searchActive = searchTerm !== '';
+            
 
             route.forEach(function(location, index) {
-                // Check for a match in address, amenity, or amenity name
-                var match = location.address.toLowerCase().includes(searchTerm);
-                if (!match && location.pois && location.pois.length > 0) {
-                    location.pois.forEach(poi => {
-                        if (poi.tags.amenity && poi.tags.amenity.toLowerCase().includes(searchTerm)) {
-                            match = true;
-                        }
-                        if (poi.tags.name && poi.tags.name.toLowerCase().includes(searchTerm)) {
-                            match = true;
-                        }
-                    });
-                }
+            var match = false;
+            
+             // Check for a match only if a search term is active
+        if (searchActive) {
+            match = location.address.toLowerCase().includes(searchTerm);
+            if (!match && location.pois && location.pois.length > 0) {
+                location.pois.forEach(poi => {
+                    if (poi.tags.amenity && poi.tags.amenity.toLowerCase().includes(searchTerm)) {
+                        match = true;
+                    }
+                    if (poi.tags.name && poi.tags.name.toLowerCase().includes(searchTerm)) {
+                        match = true;
+                    }
+                });
+            }
+        }
+                
 
                 // Determine icon color based on match
-                var icon = match ? redIcon : blueIcon;
+                var icon = (searchActive && match) ? redIcon : blueIcon;
+                
 
                 // Create a marker with the chosen icon
                 var marker = L.marker([location.lat, location.lon], { icon: icon }).addTo(map);
-                marker.bindPopup(`<b>${location.address}</b><br>Date: ${location.timestamp}<br>${location.display_name}`);
+                marker.bindPopup(`<b>${location.address}</b><br>Date: ${location.timestamp}`);
         
 
         // Add click event listener to open popup on click
