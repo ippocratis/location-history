@@ -232,6 +232,25 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+// Define red and blue icons
+        var redIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/ippocratis/location-history/main/templates/red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        var blueIcon = new L.Icon({
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
         // Function to clear existing markers and polyline on the map
         function clearMap() {
             map.eachLayer(function (layer) {
@@ -243,14 +262,32 @@
 
         // Function to add markers and polyline for a route without auto pin popup
         function displayRoute(route) {
-    clearMap();
-    var markers = [];
-    var latlngs = [];
+            clearMap();
+            var markers = [];
+            var latlngs = [];
+            var searchTerm = document.getElementById('search-input').value.toLowerCase();
 
-    route.forEach(function(location, index) {
-        // Create a marker without opening a popup
-        var marker = L.marker([location.lat, location.lon]).addTo(map);
-        marker.bindPopup(`<b>${location.address}</b><br>Date: ${location.timestamp}<br>${location.display_name}`);
+            route.forEach(function(location, index) {
+                // Check for a match in address, amenity, or amenity name
+                var match = location.address.toLowerCase().includes(searchTerm);
+                if (!match && location.pois && location.pois.length > 0) {
+                    location.pois.forEach(poi => {
+                        if (poi.tags.amenity && poi.tags.amenity.toLowerCase().includes(searchTerm)) {
+                            match = true;
+                        }
+                        if (poi.tags.name && poi.tags.name.toLowerCase().includes(searchTerm)) {
+                            match = true;
+                        }
+                    });
+                }
+
+                // Determine icon color based on match
+                var icon = match ? redIcon : blueIcon;
+
+                // Create a marker with the chosen icon
+                var marker = L.marker([location.lat, location.lon], { icon: icon }).addTo(map);
+                marker.bindPopup(`<b>${location.address}</b><br>Date: ${location.timestamp}<br>${location.display_name}`);
+        
 
         // Add click event listener to open popup on click
         marker.on('click', function() {
@@ -260,6 +297,7 @@
         markers.push(marker);
 
         // Add current latlng to latlngs array
+        
         latlngs.push([location.lat, location.lon]);
 
         // Add arrow markers between consecutive points (excluding the last point)
