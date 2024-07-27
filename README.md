@@ -134,7 +134,9 @@ Or
 
 - Put Dockerfile docker-compose.yml entrypoint.sh together with preprocess.py app.py requirements.txt and the .rec files on root Dir and index.html in templates/index.html and run "docker compose up --build -d" app is running on localhost on port 8789 but you can refine your port in docker-compose.
 
-- Or simply clone this repo and run "docker compose up --build -d"
+Or 
+
+- Simply clone this repo , put your .rec filea in thw root dir and run "docker compose up --build -d"
 
 - A copy_files.py is also added in this repo . You could fill the source and destination dir for .rec files and run it periodically in a cronjob.
 
