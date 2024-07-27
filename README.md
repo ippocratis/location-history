@@ -136,7 +136,7 @@ Or
 
 Or 
 
-- Simply clone this repo , put your .rec filea in thw root dir and run "docker compose up --build -d"
+- Simply clone this repo , put your .rec files in the root dir and run "docker compose up --build -d"
 
 - A copy_files.py is also added in this repo . You could fill the source and destination dir for .rec files and run it periodically in a cronjob.
 
