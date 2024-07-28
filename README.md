@@ -126,6 +126,9 @@ Expanded route locations entries are name/time taged.
 
 - Search input also dominates the timeline . If it is filled only matched routes are displayed in the timeline .
 
+- A dummy .rec file and the processed processed_locations.json that was generated from it with the preprocess.py script is added to this repo so that you can immediately view results if you want to test this app by simply running ` docker compose up --build` in the root Dir.
+
+
 # Run the app
 
 - Put preprocess.py app.py requirements.txt the .rec files on root Dir and index.html in templates/index.html then run "python app.py" and open index.html
