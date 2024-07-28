@@ -1,6 +1,6 @@
 # **Location History**
 
-"Location history" aims to be a location history visualizer that offers search (city, region, state, address,postal code but also amenities and amenity names aka POIs),a date picker,day navigation arrows, route grouping and a map to visualize routes and location pins..
+"Location history" aims to be a location history visualizer that offers search (city, region, state, address,postal code but also amenities and amenity names aka POIs),a date picker,day navigation arrows, a button to diaplay stops for the selected date, route grouping for the selected date and a map to visualize routes and location pins..
 
 ## Backend
 
@@ -31,6 +31,12 @@ It uses groupLocationsByRoute to group all locations into routes.
 It filters the routes to include only those where any location's address contains the search term (case-insensitive).
 Filters routes where any location or its POIs (Points of Interest) contain the search term in their address, name, or amenity tags.
 
+- Endpoint to fetch stops /get_stops
+
+This stop logic is simple : if location b is more than 30 min appart from location a then location a is a stop.
+Stop duration is the duration in hours:minutes from location a to b.
+This endpoint serves stops,durations,addresses and poi
+
 - Homepage Route:
 
 The endpoint / renders an index.html template, which would be the homepage of the web application.
@@ -56,6 +62,8 @@ https://ippocratis.github.io/owntracks/
 Process .rec files containing location data, reverse geocode the locations using the OpenStreetMap Nominatim service, and save the processed data to processed_locations JSON file.
 
 Here’s a breakdown:
+
+- Convert timestamps from greenwich times to local times.
 
 - Reverse Geocode Function (reverse_geocode):
 
@@ -146,6 +154,11 @@ Or
 - Running the docker compose file will first run the preprocess.py script , you can comment that line in entrypoint.sh if you don't want the script to run every time docker compose is starting .
   
 - Handle reverse proxy and SSL certs mtls in your webserver if you plan to expose the app outside your localhost.
+
+- Set your local time zone in preprocess.py
+LOCAL_TZ = pytz.timezone('Europe/Athens')
+Get proper locales for pytz from w.g. [here](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568)
+
   
 ![](media/search_popup.png) | ![](media/timeline.png)
 ![](media/map_route.png)
