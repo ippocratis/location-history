@@ -160,5 +160,9 @@ LOCAL_TZ = pytz.timezone('Europe/Athens')
 Get proper locales for pytz from w.g. [here](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568)
 
   
-![](media/search_popup.png) | ![](media/timeline.png)
-![](media/map_route.png)
+| timeline | routes |
+|--------|--------|
+![timeline](media/timeline.png) | ![routes](media/route.png) |
+| stops | search |
+| ![stops](media/stops.png) | ![search](media/search.png) |
+
