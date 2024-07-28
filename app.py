@@ -4,6 +4,29 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+# Function to compute stops and their durations
+def compute_stops_and_durations(locations):
+    stops = []
+    threshold_minutes = 30
+    
+    for i in range(len(locations) - 1):
+        current_location = locations[i]
+        next_location = locations[i + 1]
+        
+        # Parse ISO 8601 timestamp format
+        current_timestamp = datetime.fromisoformat(current_location['timestamp'])
+        next_timestamp = datetime.fromisoformat(next_location['timestamp'])
+        
+        # Check if the time difference exceeds the threshold
+        if (next_timestamp - current_timestamp).total_seconds() / 60 > threshold_minutes:
+            stop_duration = next_timestamp - current_timestamp
+            stops.append({
+                'stop_location': current_location,
+                'stop_duration': str(stop_duration)
+            })
+    
+    return stops
+
 # Function to group locations by route based on a time threshold (e.g., 30 minutes)
 def groupLocationsByRoute(locations):
     routes = []
@@ -68,7 +91,35 @@ def search_locations():
     except FileNotFoundError:
         return jsonify([])
 
+# New endpoint to fetch stops and durations based on the selected date
+@app.route('/get_stops')
+def get_stops():
+    date = request.args.get('date')
 
+    # Check if date parameter is provided
+    if not date:
+        return jsonify({'error': 'Date parameter is required'}), 400
+
+    try:
+        with open('processed_locations.json', 'r') as file:
+            locations = json.load(file)
+            
+            # Filter locations based on the date parameter
+            filtered_locations = [
+                loc for loc in locations 
+                if loc.get('timestamp') and loc['timestamp'].startswith(date)
+            ]
+            
+            # Compute stops and durations
+            stops_and_durations = compute_stops_and_durations(filtered_locations)
+            return jsonify(stops_and_durations)
+    
+    except FileNotFoundError:
+        return jsonify({'error': 'File not found'}), 404
+    except json.JSONDecodeError:
+        return jsonify({'error': 'Error decoding JSON'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/')
