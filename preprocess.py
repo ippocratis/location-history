@@ -2,7 +2,11 @@ import json
 import os
 import requests
 from datetime import datetime
+import pytz
 import overpy
+
+# Set your local time zone here
+LOCAL_TZ = pytz.timezone('America/New_York')  # Replace with your local time zone
 
 # Function to reverse geocode using OpenStreetMap Nominatim
 def reverse_geocode(lat, lon):
@@ -82,6 +86,12 @@ def get_pois(lat, lon, radius=30):
             })
     return pois
 
+# Function to convert Zulu time to local time
+def convert_zulu_to_local(zulu_time_str):
+    utc_time = datetime.fromisoformat(zulu_time_str.replace('Z', '+00:00'))
+    local_time = utc_time.astimezone(LOCAL_TZ)
+    return local_time.isoformat()
+
 # Function to process .rec files
 def process_files():
     processed_files = set()
@@ -127,7 +137,7 @@ def process_files():
                         pois = get_pois(location['lat'], location['lon'])
                         location['pois'] = pois
 
-                    location['timestamp'] = datetime.fromtimestamp(location['tst']).isoformat()
+                    location['timestamp'] = convert_zulu_to_local(timestamp)
                     processed_locations.append(location)
                 except (ValueError, KeyError) as e:
                     print(f"Skipping line due to error: {e}")
