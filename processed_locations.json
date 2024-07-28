@@ -1,0 +1,733 @@
+[
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014534,
+    "lat": 51.509865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993399,
+    "vac": 14,
+    "vel": 0,
+    "address": "Waterloo Bridge, St Clement Danes, Waterloo, London, Greater London, England, WC2E 7ED, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:43:19"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014539,
+    "lat": 51.514865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993404,
+    "vac": 14,
+    "vel": 0,
+    "address": "Virginia Woolf Building, 22, Kingsway, Gray's Inn, Holborn, London Borough of Camden, London, Greater London, England, WC2B 6LE, United Kingdom",
+    "pois": [
+      {
+        "type": "node",
+        "id": 1116224901,
+        "lat": "51.5146741",
+        "lon": "-0.1183354",
+        "tags": {
+          "amenity": "telephone",
+          "booth": "K6",
+          "check_date": "2024-05-07",
+          "colour": "black",
+          "covered": "booth"
+        }
+      },
+      {
+        "type": "node",
+        "id": 1493298003,
+        "lat": "51.5150721",
+        "lon": "-0.1181337",
+        "tags": {
+          "amenity": "bicycle_rental",
+          "bicycle_rental": "docking_station",
+          "brand": "Santander Cycles",
+          "brand:wikidata": "Q807961",
+          "capacity": "24",
+          "historic:ref": "CH10128",
+          "local": "Holborn",
+          "name": "Sardinia Street",
+          "network": "tfl_cycle_hire",
+          "official_name": "Sardinia Street, Holborn",
+          "official_ref": "372",
+          "operator": "Serco",
+          "operator:wikidata": "Q499104"
+        }
+      },
+      {
+        "type": "node",
+        "id": 1962924473,
+        "lat": "51.5149966",
+        "lon": "-0.1184062",
+        "tags": {
+          "amenity": "charging_station"
+        }
+      },
+      {
+        "type": "node",
+        "id": 3148313370,
+        "lat": "51.5150411",
+        "lon": "-0.1178973",
+        "tags": {
+          "amenity": "bicycle_parking",
+          "capacity": "16",
+          "covered": "no",
+          "fee": "no"
+        }
+      },
+      {
+        "type": "node",
+        "id": 5083889711,
+        "lat": "51.5149628",
+        "lon": "-0.1179670",
+        "tags": {
+          "amenity": "dentist",
+          "contact:phone": "+44 20 7404 8600",
+          "contact:website": "https://sardiniadental.com/",
+          "healthcare": "dentist",
+          "level": "4",
+          "name": "Sardinia House Dental Practice",
+          "source": "survey"
+        }
+      },
+      {
+        "type": "node",
+        "id": 10264906500,
+        "lat": "51.5148474",
+        "lon": "-0.1184242",
+        "tags": {
+          "amenity": "bicycle_parking",
+          "bicycle_parking": "post_hoop",
+          "capacity": "2",
+          "covered": "no",
+          "ref:GB:tflcid": "RWG057004"
+        }
+      },
+      {
+        "type": "node",
+        "id": 10264906501,
+        "lat": "51.5147536",
+        "lon": "-0.1183548",
+        "tags": {
+          "amenity": "bicycle_parking",
+          "bicycle_parking": "post_hoop",
+          "capacity": "2",
+          "covered": "no",
+          "ref:GB:tflcid": "RWG057006"
+        }
+      },
+      {
+        "type": "relation",
+        "id": 4124110,
+        "center_lat": "51.5144940",
+        "center_lon": "-0.1165754",
+        "tags": {
+          "addr:city": "London",
+          "addr:country": "GB",
+          "addr:postcode": "WC2A 2AE",
+          "addr:street": "Houghton Street",
+          "alt_name": "London School of Economics",
+          "amenity": "university",
+          "contact:phone": "+44 20 7405 7686",
+          "contact:website": "http://www.lse.ac.uk/",
+          "internet_access": "wlan",
+          "name": "London School of Economics and Political Science",
+          "name:en": "London School of Economics and Political Science",
+          "name:ru": "\u041b\u043e\u043d\u0434\u043e\u043d\u0441\u043a\u0430\u044f \u0448\u043a\u043e\u043b\u0430 \u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0438 \u0438 \u043f\u043e\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u043d\u0430\u0443\u043a",
+          "name:zh": "\u4f26\u6566\u653f\u6cbb\u7ecf\u6d4e\u5b66\u9662",
+          "short_name": "LSE",
+          "type": "multipolygon",
+          "wheelchair": "limited",
+          "wheelchair:description": "Varying accessibility;check individual buildings",
+          "wikidata": "Q174570",
+          "wikipedia": "en:London School of Economics"
+        }
+      },
+      {
+        "type": "relation",
+        "id": 5747097,
+        "center_lat": "51.5131855",
+        "center_lon": "-0.1163242",
+        "tags": {
+          "addr:city": "London",
+          "addr:postcode": "WC2R 2LS",
+          "addr:street": "Strand",
+          "amenity": "university",
+          "name": "King's College London, Strand Campus",
+          "operator": "King's College London",
+          "type": "multipolygon",
+          "website": "https://www.kcl.ac.uk/visit/strand-campus",
+          "wikidata": "Q245247",
+          "wikipedia": "en:King's College London"
+        }
+      }
+    ],
+    "timestamp": "2024-07-14T21:43:24"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014544,
+    "lat": 51.519865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993409,
+    "vac": 14,
+    "vel": 0,
+    "address": "Conway Hall, 25, Red Lion Square, Gray's Inn, Holborn, London Borough of Camden, London, Greater London, England, WC1R 4RL, United Kingdom",
+    "pois": [
+      {
+        "type": "node",
+        "id": 647873586,
+        "lat": "51.5199680",
+        "lon": "-0.1176910",
+        "tags": {
+          "addr:city": "London",
+          "addr:housenumber": "44",
+          "addr:postcode": "WC1R 4PF",
+          "amenity": "pub",
+          "fhrs:id": "423760",
+          "name": "The Dolphin Tavern",
+          "phone": "+44 20 7831 6298"
+        }
+      },
+      {
+        "type": "node",
+        "id": 6091111586,
+        "lat": "51.5200874",
+        "lon": "-0.1180129",
+        "tags": {
+          "amenity": "restaurant",
+          "name": "Zaha Street Grill",
+          "opening_hours": "Mo-Fr 11:30-21:00",
+          "payment:credit_cards": "yes",
+          "payment:debit_cards": "yes",
+          "wheelchair": "no"
+        }
+      }
+    ],
+    "timestamp": "2024-07-14T21:43:29"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014549,
+    "lat": 51.524865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993414,
+    "vac": 14,
+    "vel": 0,
+    "address": "Mecklenburgh Square Gardens, Mecklenburgh Square, Gray's Inn, King's Cross, London Borough of Camden, London, Greater London, England, WC1N 2AJ, United Kingdom",
+    "pois": [
+      {
+        "type": "node",
+        "id": 3834774289,
+        "lat": "51.5246964",
+        "lon": "-0.1177685",
+        "tags": {
+          "addr:city": "London",
+          "addr:country": "GB",
+          "amenity": "motorcycle_parking",
+          "covered": "no"
+        }
+      }
+    ],
+    "timestamp": "2024-07-14T21:43:34"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014554,
+    "lat": 51.529865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993419,
+    "vac": 14,
+    "vel": 0,
+    "address": "Britannia Street, King's Cross, London Borough of Camden, London, Greater London, England, WC1X 9BP, United Kingdom",
+    "pois": [
+      {
+        "type": "node",
+        "id": 672038483,
+        "lat": "51.5299121",
+        "lon": "-0.1180523",
+        "tags": {
+          "amenity": "bicycle_parking"
+        }
+      },
+      {
+        "type": "node",
+        "id": 9689569290,
+        "lat": "51.5298821",
+        "lon": "-0.1181672",
+        "tags": {
+          "amenity": "vending_machine",
+          "vending": "parking_tickets"
+        }
+      },
+      {
+        "type": "way",
+        "id": 300006774,
+        "center_lat": "51.5297301",
+        "center_lon": "-0.1179196",
+        "tags": {
+          "amenity": "parking",
+          "fee": "yes",
+          "parking": "surface",
+          "supervised": "no",
+          "surface": "asphalt"
+        }
+      },
+      {
+        "type": "way",
+        "id": 1054384452,
+        "center_lat": "51.5298054",
+        "center_lon": "-0.1187186",
+        "tags": {
+          "access": "yes",
+          "amenity": "parking",
+          "fee": "yes",
+          "parking": "surface"
+        }
+      }
+    ],
+    "timestamp": "2024-07-14T21:43:39"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014559,
+    "lat": 51.534865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993424,
+    "vac": 14,
+    "vel": 0,
+    "address": "Society Building, 8, All Saints Street, Pentonville, Barnsbury, London Borough of Islington, London, Greater London, England, N1 9RL, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:43:44"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014564,
+    "lat": 51.539865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993429,
+    "vac": 14,
+    "vel": 0,
+    "address": "Coatbridge House, Earlsferry Way, Bemerton Estate, Barnsbury, London Borough of Islington, London, Greater London, England, N1 0DR, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:43:49"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014569,
+    "lat": 51.544865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993434,
+    "vac": 14,
+    "vel": 0,
+    "address": "R Proietti, 2, Blundell Street, Barnsbury, London Borough of Islington, London, Greater London, England, N7 9BH, United Kingdom",
+    "pois": [
+      {
+        "type": "node",
+        "id": 333185671,
+        "lat": "51.5449526",
+        "lon": "-0.1179260",
+        "tags": {
+          "amenity": "cafe",
+          "name": "The Breakout"
+        }
+      },
+      {
+        "type": "node",
+        "id": 6545243358,
+        "lat": "51.5449529",
+        "lon": "-0.1177778",
+        "tags": {
+          "amenity": "bicycle_parking",
+          "bicycle_parking": "stands",
+          "capacity": "4",
+          "covered": "no"
+        }
+      }
+    ],
+    "timestamp": "2024-07-14T21:43:54"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014574,
+    "lat": 51.549865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993439,
+    "vac": 14,
+    "vel": 0,
+    "address": "Hillmarton Road, Lower Holloway, Holloway, London Borough of Islington, London, Greater London, England, N7 9RP, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:43:59"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014579,
+    "lat": 51.554865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993444,
+    "vac": 14,
+    "vel": 0,
+    "address": "Camden Road, Lower Holloway, Holloway, London Borough of Islington, London, Greater London, England, N7 9RS, United Kingdom",
+    "pois": [
+      {
+        "type": "way",
+        "id": 30286127,
+        "center_lat": "51.5548678",
+        "center_lon": "-0.1188459",
+        "tags": {
+          "amenity": "college",
+          "operator": "City & Islington College",
+          "wikidata": "Q5123524",
+          "wikipedia": "en:City and Islington College"
+        }
+      }
+    ],
+    "timestamp": "2024-07-14T21:44:04"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014584,
+    "lat": 51.559865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993449,
+    "vac": 14,
+    "vel": 0,
+    "address": "Salterton Road, Lower Holloway, Holloway, London Borough of Islington, London, Greater London, England, N7 6BE, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:09"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014589,
+    "lat": 51.564865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993454,
+    "vac": 14,
+    "vel": 0,
+    "address": "Sedgley House, Wray Crescent, Holloway, London Borough of Islington, London, Greater London, England, N4 3LP, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:14"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014594,
+    "lat": 51.569865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993459,
+    "vac": 14,
+    "vel": 0,
+    "address": "Crouch Hall Court, Finsbury Park, London Borough of Islington, London, Greater London, England, N19 4EW, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:19"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014599,
+    "lat": 51.574865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993464,
+    "vac": 14,
+    "vel": 0,
+    "address": "High Mount, Mount View Road, Ferme Park, Stroud Green, London Borough of Haringey, London, Greater London, England, N4 4ST, United Kingdom",
+    "pois": [
+      {
+        "type": "node",
+        "id": 1423254949,
+        "lat": "51.5749502",
+        "lon": "-0.1182284",
+        "tags": {
+          "amenity": "post_box",
+          "collection_times": "Mo-Fr 09:00, Sa 07:00",
+          "operator": "Royal Mail",
+          "operator:wikidata": "Q638098",
+          "ref": "N4 25",
+          "royal_cypher": "VR",
+          "royal_cypher:wikidata": "Q33102356"
+        }
+      },
+      {
+        "type": "way",
+        "id": 1062328990,
+        "center_lat": "51.5748967",
+        "center_lon": "-0.1177775",
+        "tags": {
+          "amenity": "parking"
+        }
+      }
+    ],
+    "timestamp": "2024-07-14T21:44:24"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014604,
+    "lat": 51.579865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993469,
+    "vac": 14,
+    "vel": 0,
+    "address": "27, Drylands Road, Ferme Park, Crouch End, London Borough of Haringey, London, Greater London, England, N8 9HN, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:29"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014609,
+    "lat": 51.584865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993474,
+    "vac": 14,
+    "vel": 0,
+    "address": "102, Hillfield Avenue, Ferme Park, Crouch End, London Borough of Haringey, London, Greater London, England, N8 7DN, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:34"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014614,
+    "lat": 51.589865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993479,
+    "vac": 14,
+    "vel": 0,
+    "address": "Miles Road, Haringey Heartlands, Hornsey, London Borough of Haringey, London, Greater London, England, N8 7SN, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:39"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014619,
+    "lat": 51.594865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993484,
+    "vac": 14,
+    "vel": 0,
+    "address": "Hornsey Water Treatment Works, Newland Road, Haringey Heartlands, Hornsey, London Borough of Haringey, London, Greater London, England, N8 7AN, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:44"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014624,
+    "lat": 51.599865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993489,
+    "vac": 14,
+    "vel": 0,
+    "address": "Braemar Avenue, Hornsey, London Borough of Haringey, London, Greater London, England, N22 7BZ, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:49"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014629,
+    "lat": 51.604865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993494,
+    "vac": 14,
+    "vel": 0,
+    "address": "Tudor Court, Clarence Road, London Borough of Haringey, London, Greater London, England, N22 8QD, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:54"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014634,
+    "lat": 51.609865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993499,
+    "vac": 14,
+    "vel": 0,
+    "address": "Whittington Road, London Borough of Enfield, London, Greater London, England, N22 8YG, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:44:59"
+  },
+  {
+    "_type": "location",
+    "acc": 88,
+    "alt": 100,
+    "batt": 38,
+    "bs": 1,
+    "conn": "m",
+    "created_at": 1721014639,
+    "lat": 51.614865,
+    "lon": -0.118092,
+    "m": 1,
+    "t": "p",
+    "tid": "ig",
+    "tst": 1720993504,
+    "vac": 14,
+    "vel": 0,
+    "address": "Cranford Avenue, Bowes Park, Palmers Green, London Borough of Enfield, London, Greater London, England, N13 4PA, United Kingdom",
+    "pois": [],
+    "timestamp": "2024-07-14T21:45:04"
+  }
+]
