@@ -7,31 +7,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #ffffff
             overflow: hidden; /* Prevent scrolling */
         }
-        #controls {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px; /* Reduced margin to give more space to the timeline */
-        }
+
+     * {
+    box-sizing: border-box; /* Ensure padding and border are included in dimensions */
+}
+
+#controls {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: none;
+    margin: 0; /* Ensure no margin */
+}
         .search-container {
             width: 100%;
             display: flex;
@@ -39,6 +49,7 @@
             align-items: center;
             margin-bottom: 10px;
         }
+
         #search-input {
             flex: 1;
             padding: 10px;
@@ -49,12 +60,14 @@
             outline: none;
             max-width: 100%;
         }
+
         .date-controls {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
+
         .date-controls button {
             padding: 10px;
             font-size: 16px;
@@ -67,42 +80,51 @@
             box-shadow: none;
             margin: 0 5px;
         }
+
         .date-controls #select-date {
             border: 1px solid #ddd;
             border-radius: 4px;
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #fff;
+            background-color: #ffffff
             color: #000;
             transition: background-color 0.3s ease;
             margin: 0 5px;
         }
+
         .date-controls #select-date:hover {
-            background-color: #f0f0f0;
+            background-color: #ffffff
         }
+
         #map-container {
             width: 100%;
-            height: 50%; /* Increased to 50% of the screen height */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px; /* Reduced margin to give more space to the timeline */
-        }
+    height: 50%;
+    border-radius: 20px;
+    box-shadow: none;
+    margin: 0; /* Ensure no margin */
+    overflow: hidden; /* To ensure child elements like the map do not exceed container bounds */
+    border: 2px solid #87CEFA;
+}
+
         #map {
             width: 100%;
-            height: 100%;
-        }
+    height: 100%;
+    border-radius: 20px; /* Make corners of the map round */
+}
+
         #timeline {
             width: 100%;
             max-width: 800px;
-            height: 35%; /* Increased to 35% of the screen height */
+            height: 35%;
             overflow-y: auto;
             background-color: #fff;
-            border-radius: 8px;
+            border-radius: 5px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             padding: 10px;
-            margin-bottom: 10px; /* Reduced margin to give more space to the timeline */
+            margin-top: 0; /* Set top margin to zero */
         }
+
         .timeline-item {
             cursor: pointer;
             margin-bottom: 10px;
@@ -112,14 +134,17 @@
             transition: background-color 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .timeline-item:hover {
             background-color: #e0e0e0;
         }
+
         .timeline-item p {
             margin: 5px 0;
             color: #333;
             font-size: 14px;
         }
+
         #back-to-routes {
             display: none;
             padding: 10px;
@@ -133,79 +158,87 @@
             box-shadow: none;
             margin: 0 5px;
         }
+
         #back-to-routes:hover {
             background-color: #f0f0f0;
         }
+
         .arrow-icon {
-    text-align: center;
-    line-height: 1;
-          }
+            text-align: center;
+            line-height: 1;
+        }
+
         @media (max-width: 768px) {
             #controls {
                 padding: 10px;
                 margin-bottom: 10px;
             }
+
             .date-controls {
                 flex-direction: row;
             }
+
             .date-controls button {
                 font-size: 14px;
                 padding: 8px;
             }
+
             #search-input {
                 font-size: 14px;
                 padding: 8px;
             }
         }
-    #search-results-popup {
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
 
-    #search-results-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 800px;
-        max-height: 70vh; /* Set a maximum height */
-        overflow-y: auto; /* Add vertical scroll if content exceeds max height */
-        border-radius: 8px;
-        position: relative;
-    }
+        #search-results-popup {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+        }
 
-    #close-search-results {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
+        #search-results-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            max-height: 70vh; /* Set a maximum height */
+            overflow-y: auto; /* Add vertical scroll if content exceeds max height */
+            border-radius: 20px;
+            position: relative;
+        }
 
-    #close-search-results:hover,
-    #close-search-results:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+        #close-search-results {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        #close-search-results:hover,
+        #close-search-results:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div id="controls">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Search locations...">
-      <button id="view-search-results">Search</button>
-    </div>
+            <button id="view-search-results">Search</button>
+        </div>
         <div class="date-controls">
             <button id="prev-day" title="Previous Day">&lt;</button>
             <input type="date" id="date-picker">
@@ -218,13 +251,13 @@
     </div>
     <div id="timeline"></div>
     <div id="search-results-popup" style="display: none;">
-    <div id="search-results-content">
-        <span id="close-search-results">&times;</span>
-        <h2>Search Results</h2>
-        <div id="search-results-list"></div>
+        <div id="search-results-content">
+            <span id="close-search-results">&times;</span>
+            <h2>Search Results</h2>
+            <div id="search-results-list"></div>
+        </div>
     </div>
-</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script>
         // Initialize Leaflet map
         var map = L.map('map').setView([0, 0], 3); // Set initial view to world map
