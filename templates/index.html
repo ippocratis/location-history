@@ -240,6 +240,7 @@
             <button id="view-search-results">Search</button>
         </div>
         <div class="date-controls">
+         <button id="view-stop-entries" title="view-stop-entries">&lt; View Stop Entries</button>
             <button id="prev-day" title="Previous Day">&lt;</button>
             <input type="date" id="date-picker">
             <button id="next-day" title="Next Day">&gt;</button>
@@ -259,6 +260,93 @@
     </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
     <script>
+    
+    // stops
+    // Handle the "View Stop Entries" button click
+document.getElementById('view-stop-entries').addEventListener('click', function() {
+    // Show the popup
+    document.getElementById('search-results-popup').style.display = 'flex';
+
+    // Fetch the stop entries data
+    var date = document.getElementById('date-picker').value;
+    if (!date) {
+        alert("Please select a date first.");
+        return;
+    }
+
+    fetch(`/get_stops?date=${date}`)
+        .then(response => response.json())
+        .then(data => {
+            populateStopEntries(data);
+        })
+        .catch(error => console.error('Error fetching stop entries:', error));
+});
+
+// Handle the "Close" button click inside the popup
+document.getElementById('close-search-results').addEventListener('click', function() {
+    document.getElementById('search-results-popup').style.display = 'none';
+});
+
+function populateStopEntries(stops) {
+    var searchResultsList = document.getElementById('search-results-list');
+    searchResultsList.innerHTML = '';
+
+    if (stops.length === 0) {
+        searchResultsList.innerHTML = '<p>No stop entries found.</p>';
+    } else {
+        stops.forEach(stop => {
+            var stopItem = document.createElement('div');
+            stopItem.classList.add('timeline-item');
+
+            var address = stop.stop_location.address;
+            var duration = stop.stop_duration;
+            var hoursMinutes = formatDuration(duration);
+
+            stopItem.innerHTML = `
+                <p><strong>Address:</strong> ${address}</p>
+                <p><strong>Duration:</strong> ${hoursMinutes}</p>
+            `;
+
+            // Add click event listener to show the stop on the map and close the popup
+            stopItem.addEventListener('click', function() {
+                showStopOnMap(stop);
+
+                // Close the popup window
+                document.getElementById('search-results-popup').style.display = 'none';
+            });
+
+            searchResultsList.appendChild(stopItem);
+        });
+    }
+}
+
+function formatDuration(duration) {
+    var [hours, minutes, seconds] = duration.split(':').map(Number);
+    return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+}
+
+function showStopOnMap(stop) {
+    // Ensure map is centered on the stop location
+    map.setView([stop.stop_location.lat, stop.stop_location.lon], 14);
+
+    // Clear previous markers if any
+    clearMap();
+
+    // Create a new marker for the stop
+    var marker = L.marker([stop.stop_location.lat, stop.stop_location.lon], { icon: blueIcon }).addTo(map);
+    marker.bindPopup(`<b>${stop.stop_location.address}</b><br>Date: ${stop.timestamp}`).openPopup();
+
+    // Optionally, store the marker if needed for further use
+    markers = [marker];
+}
+
+// Ensure you have a function to clear the map
+function clearMap() {
+    markers.forEach(marker => map.removeLayer(marker));
+    markers = [];
+}
+    
+    
         // Initialize Leaflet map
         var map = L.map('map').setView([0, 0], 3); // Set initial view to world map
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
