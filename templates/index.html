@@ -560,33 +560,40 @@ function calculateDirection(lat1, lon1, lat2, lon2) {
         
         // Function to update timeline with routes
 function updateTimeline(routes) {
-    var timeline = document.getElementById('timeline');
-    timeline.innerHTML = '';
-    routes.forEach(function(route, index) {
-        var routeItem = document.createElement('div');
-        routeItem.classList.add('timeline-item');
-        var startDate = new Date(route[0].timestamp).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' });
-        var endDate = new Date(route[route.length - 1].timestamp).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' });
-        routeItem.innerHTML = `
-            <p>Route from ${startDate} to ${endDate}</p>
-        `;
-        routeItem.addEventListener('click', function() {
-            displayRoute(route);
-            expandRoute(route);
-        });
-        timeline.appendChild(routeItem);
-    });
+  var timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+  routes.forEach(function(route, index) {
+    var routeItem = document.createElement('div');
+    routeItem.classList.add('timeline-item');
+    var startDate = new Date(route[0].timestamp).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' });
+    var endDate = new Date(route[route.length - 1].timestamp).toLocaleString('en-US', { hour: '2-digit', minute: '2-digit' });
+    
+    // Calculate duration from timestamps directly in the function
+    var startTimestamp = new Date(route[0].timestamp);
+    var endTimestamp = new Date(route[route.length - 1].timestamp);
+    var durationMs = endTimestamp - startTimestamp;
+    var hours = Math.floor(durationMs / (1000 * 60 * 60));
+    var minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+    var routeDuration = hours + 'h ' + minutes + 'm';
 
-    // Automatically zoom to the first route's initial location
-    if (routes.length > 0) {
-        zoomOnFirstRoute(routes[0]);
-    }
+    routeItem.innerHTML = `
+  <p>${routeDuration}</p>
+  <p>from ${startDate} to ${endDate}</p>
+`;
+    
+    routeItem.addEventListener('click', function() {
+      displayRoute(route);
+      expandRoute(route);
+    });
+    timeline.appendChild(routeItem);
+  });
+
+  // Automatically zoom to the first route's initial location
+  if (routes.length > 0) {
+    zoomOnFirstRoute(routes[0]);
+  }
 }
-        
-        
-        
-        
-        
+
 
         // Function to zoom on the first route's initial location
         function zoomOnFirstRoute(route) {
