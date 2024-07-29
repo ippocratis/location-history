@@ -8,24 +8,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <style>
         html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            background-color: #ffffff
-            overflow: hidden; /* Prevent scrolling */
-        }
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    overflow: hidden; /* Prevent scrolling */
+}
 
-     * {
+* {
     box-sizing: border-box; /* Ensure padding and border are included in dimensions */
 }
 
@@ -36,69 +36,71 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #ffffff
+    background-color: #ffffff;
     padding: 10px;
     border-radius: 20px;
     box-shadow: none;
     margin: 0; /* Ensure no margin */
 }
-        .search-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 10px;
-        }
 
-        #search-input {
-            flex: 1;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-right: 10px;
-            outline: none;
-            max-width: 100%;
-        }
+.search-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
-        .date-controls {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+#search-input {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+    outline: none;
+    max-width: 100%;
+}
 
-        .date-controls button {
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            color: #000;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-            box-shadow: none;
-            margin: 0 5px;
-        }
+.date-controls {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
 
-        .date-controls #select-date {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #ffffff
-            color: #000;
-            transition: background-color 0.3s ease;
-            margin: 0 5px;
-        }
+.date-controls button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #000;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    box-shadow: none;
+    margin: 0 5px;
+}
 
-        .date-controls #select-date:hover {
-            background-color: #ffffff
-        }
+.date-controls #select-date {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #000;
+    transition: background-color 0.3s ease;
+    margin: 0 5px;
+}
 
-        #map-container {
-            width: 100%;
+.date-controls #select-date:hover {
+    background-color: #f0f0f0;
+}
+
+#map-container {
+    width: 100%;
     height: 50%;
     border-radius: 20px;
     box-shadow: none;
@@ -107,130 +109,131 @@
     border: 2px solid #87CEFA;
 }
 
-        #map {
-            width: 100%;
+#map {
+    width: 100%;
     height: 100%;
     border-radius: 20px; /* Make corners of the map round */
 }
 
-        #timeline {
-            width: 100%;
-            max-width: 800px;
-            height: 35%;
-            overflow-y: auto;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            margin-top: 0; /* Set top margin to zero */
-        }
+#timeline {
+    width: 100%;
+    max-width: 800px;
+    height: 35%;
+    overflow-y: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    margin-top: 0; /* Set top margin to zero */
+}
 
-        .timeline-item {
-            cursor: pointer;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            transition: background-color 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+.timeline-item {
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .timeline-item:hover {
-            background-color: #e0e0e0;
-        }
+.timeline-item:hover {
+    background-color: #e0e0e0;
+}
 
-        .timeline-item p {
-            margin: 5px 0;
-            color: #333;
-            font-size: 14px;
-        }
+.timeline-item p {
+    margin: 5px 0;
+    color: #333;
+    font-size: 14px;
+}
 
-        #back-to-routes {
-            display: none;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            color: #000;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-            box-shadow: none;
-            margin: 0 5px;
-        }
+#back-to-routes {
+    display: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #000;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    box-shadow: none;
+    margin: 0 5px;
+}
 
-        #back-to-routes:hover {
-            background-color: #f0f0f0;
-        }
+#back-to-routes:hover {
+    background-color: #f0f0f0;
+}
 
-        .arrow-icon {
-            text-align: center;
-            line-height: 1;
-        }
+.arrow-icon {
+    text-align: center;
+    line-height: 1;
+}
 
-        @media (max-width: 768px) {
-            #controls {
-                padding: 10px;
-                margin-bottom: 10px;
-            }
+@media (max-width: 768px) {
+    #controls {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 
-            .date-controls {
-                flex-direction: row;
-            }
+    .date-controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
 
-            .date-controls button {
-                font-size: 14px;
-                padding: 8px;
-            }
+    .date-controls button {
+        font-size: 14px;
+        padding: 8px;
+    }
 
-            #search-input {
-                font-size: 14px;
-                padding: 8px;
-            }
-        }
+    #search-input {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
 
-        #search-results-popup {
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 20px;
-        }
+#search-results-popup {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
 
-        #search-results-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 800px;
-            max-height: 70vh; /* Set a maximum height */
-            overflow-y: auto; /* Add vertical scroll if content exceeds max height */
-            border-radius: 20px;
-            position: relative;
-        }
+#search-results-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    max-height: 70vh; /* Set a maximum height */
+    overflow-y: auto; /* Add vertical scroll if content exceeds max height */
+    border-radius: 20px;
+    position: relative;
+}
 
-        #close-search-results {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+#close-search-results {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
 
-        #close-search-results:hover,
-        #close-search-results:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+#close-search-results:hover,
+#close-search-results:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+        
     </style>
 </head>
 <body>
@@ -240,7 +243,7 @@
             <button id="view-search-results">Search</button>
         </div>
         <div class="date-controls">
-         <button id="view-stop-entries" title="view-stop-entries">&lt; View Stop Entries</button>
+         <button id="view-stop-entries" title="view-stop-entries">Stops</button>
             <button id="prev-day" title="Previous Day">&lt;</button>
             <input type="date" id="date-picker">
             <button id="next-day" title="Next Day">&gt;</button>
@@ -287,6 +290,9 @@ document.getElementById('close-search-results').addEventListener('click', functi
     document.getElementById('search-results-popup').style.display = 'none';
 });
 
+
+
+
 function populateStopEntries(stops) {
     var searchResultsList = document.getElementById('search-results-list');
     searchResultsList.innerHTML = '';
@@ -298,14 +304,16 @@ function populateStopEntries(stops) {
             var stopItem = document.createElement('div');
             stopItem.classList.add('timeline-item');
 
-            var address = stop.stop_location.address;
+            var address = parseStreetName(stop.stop_location.address);
             var duration = stop.stop_duration;
             var hoursMinutes = formatDuration(duration);
+            
 
             stopItem.innerHTML = `
                 <p><strong>Address:</strong> ${address}</p>
                 <p><strong>Duration:</strong> ${hoursMinutes}</p>
             `;
+           
 
             // Add click event listener to show the stop on the map and close the popup
             stopItem.addEventListener('click', function() {
