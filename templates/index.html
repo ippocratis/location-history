@@ -125,6 +125,7 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     padding: 10px;
     margin-top: 0; /* Set top margin to zero */
+    scrollbar-width: none; /* Remove scrollbar width */
 }
 
 .timeline-item {
@@ -620,29 +621,35 @@ function updateTimeline(routes) {
             collapseRoute();
         });
 
-        // Group locations by route based on a time threshold (e.g., 30 minutes)
+        // Group locations by route based on a time threshold (e.g., 30 minutes) and 3 locations minimum inclusion criteria
         function groupLocationsByRoute(locations) {
-            var routes = [];
-            var currentRoute = [];
-            var previousTimestamp = null;
-            var thresholdMinutes = 30;
-            locations.forEach(function(location) {
-                var timestamp = new Date(location.timestamp);
-                if (previousTimestamp && (timestamp - previousTimestamp) / (1000 * 60) > thresholdMinutes) {
-                    routes.push(currentRoute);
-                    currentRoute = [];
-                }
-                currentRoute.push(location);
-                previousTimestamp = timestamp;
-            });
-            if (currentRoute.length > 0) {
+    var routes = [];
+    var currentRoute = [];
+    var previousTimestamp = null;
+    var thresholdMinutes = 30;
+    var minLocationsPerRoute = 3;
+
+    locations.forEach(function(location) {
+        var timestamp = new Date(location.timestamp);
+
+        if (previousTimestamp && (timestamp - previousTimestamp) / (1000 * 60) > thresholdMinutes) {
+            if (currentRoute.length >= minLocationsPerRoute) {
                 routes.push(currentRoute);
             }
-            return routes;
+            currentRoute = [];
         }
 
+        currentRoute.push(location);
+        previousTimestamp = timestamp;
+    });
 
+    if (currentRoute.length >= minLocationsPerRoute) {
+        routes.push(currentRoute);
+    }
 
+    return routes;
+}
+        
 
     // Function to display search results in the popup
     function displaySearchResults(routes) {
