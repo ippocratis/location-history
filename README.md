@@ -155,7 +155,7 @@ https://ippocratis.github.io/owntracks/
 
 - A copy_files.py is also added in this repo . You could fill the source and destination dir for .rec files and run it periodically in a cronjob.
 
-- Running the docker compose file will first run the preprocess.py script , you can comment that line in entrypoint.sh if you don't want the script to run every time docker compose is starting .
+- Running the docker compose file will first run the preprocess.py script , you can comment that line in entrypoint.sh if you don't want the script to run every time docker compose is starting.
   
 - Handle reverse proxy and SSL certs in your webserver if you plan to expose the app outside your localhost. Mutual tls is a good practice too.
 
@@ -163,7 +163,7 @@ https://ippocratis.github.io/owntracks/
 LOCAL_TZ = pytz.timezone('Europe/Athens')
 Get proper locales for pytz from w.g. [here](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568)
 
-- Threefold for stops and routes is 20 min . You can adjust it in their functions in the threshold_minutes variable in app.py
+- Threshold for stops and routes is 20 min . You can adjust it in their functions in the threshold_minutes variable in app.py
 
 ### Run the app
 
