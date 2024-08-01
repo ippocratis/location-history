@@ -2,6 +2,11 @@
 
 "Location history" aims to be a location history visualizer that offers search (city, region, state, address,postal code but also amenities and amenity names aka POIs),a date picker,day navigation arrows, a button to diaplay stops for the selected date, route grouping for the selected date and a map to visualize routes and location pins..
 
+Here is a breakdown of each aspect of the app if you want to read more:
+
+<details>
+<summary>Backend</summary>
+
 ## Backend
 
 On the backend side , app.py Python code defines a Flask web application with several functionalities related to processing and retrieving location data.
@@ -43,20 +48,10 @@ The endpoint / renders an index.html template, which would be the homepage of th
 Running the Application:
 
 The application runs in debug mode and listens on all available IP addresses (host='0.0.0.0').
+</details>
 
-# Data gathering, reverse geocode and handling:
-
-### Owntracks:
-
-- For location tracking i use owntracks.
-It is a location tracking app.
-It logs coordinates when the android device moves.Locations are saved in json files with a .rec extention.
-What differs owntracks from other tracking apps is that it waits for the smart phone to tell it that the device has moves only then can OwnTracks react.
-It then needs a server to connect to. Basic http server can be used . I have configured a more advanced set up , connecting to an mqtt broker using mutual TLS . For setting up the owntracks recorder (the server) read.
-
-https://ippocratis.github.io/owntracks/ 
-
-
+<details>
+<summary>Preprocessing</summary>
 ## The prepropcess.py python script:
 
 Process .rec files containing location data, reverse geocode the locations using the OpenStreetMap Nominatim service, and save the processed data to processed_locations JSON file.
@@ -107,7 +102,11 @@ Updates processed_files.txt to mark files as processed.
 Merge and Save Processed Locations:
 Loads existing locations from processed_locations.json.
 Merges new locations with existing ones, ensuring no duplicates based on tst (timestamp), lat, and lon.
-Saves the updated locations back to processed_locations.json.
+Saves the updated locations back to processed_locations.json
+</details>
+
+<details>
+<summary>Frontend</summary>
 
 
 # Frontend
@@ -135,9 +134,38 @@ Expanded route locations entries are name/time taged.
 - Search input also dominates the timeline . If it is filled only matched routes are displayed in the timeline .
 
 - A dummy .rec file and the processed processed_locations.json that was generated from it with the preprocess.py script is added to this repo so that you can immediately view results if you want to test this app by simply running ` docker compose up --build` in the root Dir.
+</details>
 
+<details>
+<summary>Owntracks</summary>
+# Data gathering, Owntracks
 
-# Run the app
+### Owntracks:
+
+- For location tracking i use owntracks.
+It is a location tracking app.
+It logs coordinates when the android device moves.Locations are saved in json files with a .rec extention.
+What differs owntracks from other tracking apps is that it waits for the smart phone to tell it that the device has moves only then can OwnTracks react.
+It then needs a server to connect to. Basic http server can be used . I have configured a more advanced set up , connecting to an mqtt broker using mutual TLS . For setting up the owntracks recorder (the server) read.
+
+https://ippocratis.github.io/owntracks/ 
+</details>
+
+### Remarks
+
+- A copy_files.py is also added in this repo . You could fill the source and destination dir for .rec files and run it periodically in a cronjob.
+
+- Running the docker compose file will first run the preprocess.py script , you can comment that line in entrypoint.sh if you don't want the script to run every time docker compose is starting .
+  
+- Handle reverse proxy and SSL certs in your webserver if you plan to expose the app outside your localhost. Mutual tls is a good practice too.
+
+- Set your local time zone in preprocess.py
+LOCAL_TZ = pytz.timezone('Europe/Athens')
+Get proper locales for pytz from w.g. [here](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568)
+
+- Threefold for stops and routes is 20 min . You can adjust it in their functions in the threshold_minutes variable in app.py
+
+### Run the app
 
 - Put preprocess.py app.py requirements.txt the .rec files on root Dir and index.html in templates/index.html then run "python app.py" and open index.html
 
@@ -149,20 +177,8 @@ Or
 
 - Simply clone this repo , put your .rec files in the root dir and run "docker compose up --build -d"
 
-- A copy_files.py is also added in this repo . You could fill the source and destination dir for .rec files and run it periodically in a cronjob.
-
-- Running the docker compose file will first run the preprocess.py script , you can comment that line in entrypoint.sh if you don't want the script to run every time docker compose is starting .
-  
-- Handle reverse proxy and SSL certs mtls in your webserver if you plan to expose the app outside your localhost.
-
-- Set your local time zone in preprocess.py
-LOCAL_TZ = pytz.timezone('Europe/Athens')
-Get proper locales for pytz from w.g. [here](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568)
-
-  
 | timeline | routes |
 |--------|--------|
 ![timeline](media/timeline.png) | ![routes](media/route.png) |
 | stops | search |
 | ![stops](media/stops.png) | ![search](media/search.png) |
-
