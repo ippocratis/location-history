@@ -235,6 +235,29 @@ body {
     cursor: pointer;
 }
         
+        .route-icon {
+            margin-right: 5px;
+        }
+
+        .time-icon {
+            margin-right: 5px;
+        }
+        
+         .address-icon {
+            margin-right: 5px;
+        }
+        
+        .poi-icon {
+            margin-right: 5px;
+        }
+
+        .calendar-icon {
+            margin-right: 5px;
+        }
+        
+         .road-icon {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -292,7 +315,7 @@ document.getElementById('close-search-results').addEventListener('click', functi
 });
 
 
-
+// stops popup
 
 function populateStopEntries(stops) {
     var searchResultsList = document.getElementById('search-results-list');
@@ -308,13 +331,22 @@ function populateStopEntries(stops) {
             var address = parseStreetName(stop.stop_location.address);
             var duration = stop.stop_duration;
             var hoursMinutes = formatDuration(duration);
-            
+
+            // Build POI information if available
+            var poiInfo = '';
+            if (stop.stop_location.pois && stop.stop_location.pois.length > 0) {
+                stop.stop_location.pois.forEach(poi => {
+                    var poiName = poi.tags.name || 'Unknown';
+                    var poiType = poi.tags.amenity || 'Unknown';
+                    poiInfo += `<div><i class="poi-icon fas fa-info-circle"></i> ${poiName} (${poiType})</div>`;
+                });
+            }
 
             stopItem.innerHTML = `
-                <p><strong>Address:</strong> ${address}</p>
-                <p><strong>Duration:</strong> ${hoursMinutes}</p>
-            `;
-           
+<div><i class="address-icon fas fa-home"></i> ${address}</div>
+<div><i class="time-icon fas fa-clock"></i> Duration: ${hoursMinutes}</div>
+${poiInfo}
+`;
 
             // Add click event listener to show the stop on the map and close the popup
             stopItem.addEventListener('click', function() {
@@ -493,24 +525,35 @@ function expandRoute(route) {
         // Extract the street name from the address field
         var streetName = parseStreetName(location.address);
         
-        // Extract amenity and its name from the pois array
-        var amenityInfo = '';
-        if (location.pois && location.pois.length > 0) {
-            var amenity = location.pois[0].tags.amenity;
-            var amenityName = location.pois[0].tags.name;
-            if (amenity) {
-                amenityInfo = `<br>Amenity: ${amenity}`;
-                if (amenityName) {
-                    amenityInfo += ` (${amenityName})`;
-                }
+ // Build POI information if available
+            var poiInfo = '';
+            if (location.pois && location.pois.length > 0) {
+                location.pois.forEach(poi => {
+                    var poiName = poi.tags.name || 'Unknown';
+                    var poiType = poi.tags.amenity || 'Unknown';
+                    poiInfo += `<div><i class="poi-icon fas fa-info-circle"></i> ${poiName} (${poiType})</div>`;
+                });
             }
-        }
 
         var routeItem = document.createElement('div');
         routeItem.classList.add('timeline-item');
         routeItem.innerHTML = `
-            <p>${locationDate} - ${streetName}${amenityInfo}</p>
-        `;
+<div><i class="calendar-icon fas fa-calendar-alt"></i> ${locationDate}</div>
+<div><i class="road-icon fas fa-road"></i>${streetName}</div>
+${poiInfo}
+`;
+
+
+
+
+
+
+
+
+
+
+
+
         routeItem.addEventListener('click', function() {
             map.setView([location.lat, location.lon], 14);
             // Find the corresponding marker and open its popup
@@ -578,8 +621,8 @@ function updateTimeline(routes) {
     var routeDuration = hours + 'h ' + minutes + 'm';
 
     routeItem.innerHTML = `
-  <p>${routeDuration}</p>
-  <p>from ${startDate} to ${endDate}</p>
+<div><i class="time-icon fas fa-clock"></i> ${routeDuration}</div>
+<div><i class="route-icon fas fa-route"></i> from ${startDate} to ${endDate}</div>
 `;
     
     routeItem.addEventListener('click', function() {
@@ -664,8 +707,18 @@ function updateTimeline(routes) {
                 routeItem.classList.add('timeline-item');
                 var startDate = new Date(route[0].timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
                 var endDate = new Date(route[route.length - 1].timestamp).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+                
+                    // Calculate duration from timestamps directly in the function
+    var startTimestamp = new Date(route[0].timestamp);
+    var endTimestamp = new Date(route[route.length - 1].timestamp);
+    var durationMs = endTimestamp - startTimestamp;
+    var hours = Math.floor(durationMs / (1000 * 60 * 60));
+    var minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+    var routeDuration = hours + 'h ' + minutes + 'm';
+                
                 routeItem.innerHTML = `
-                    <p>Route from ${startDate} to ${endDate}</p>
+                   <div><i class="time-icon fas fa-clock"></i> ${routeDuration}</div>
+<div><i class="route-icon fas fa-route"></i> from ${startDate} to ${endDate}</div>
                 `;
                 routeItem.addEventListener('click', function() {
                     displayRoute(route);
