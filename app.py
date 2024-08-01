@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Function to compute stops and their durations
 def compute_stops_and_durations(locations):
     stops = []
-    threshold_minutes = 30
+    threshold_minutes = 20
     
     for i in range(len(locations) - 1):
         current_location = locations[i]
@@ -32,7 +32,7 @@ def groupLocationsByRoute(locations):
     routes = []
     current_route = []
     previous_timestamp = None
-    threshold_minutes = 30
+    threshold_minutes = 20
     
     for location in locations:
         # Parse ISO 8601 timestamp format
@@ -62,34 +62,44 @@ def get_locations():
     except FileNotFoundError:
         return jsonify([])
 
-# New endpoint to search locations based on searchTerm across all dates
+# New endpoint to search locations based on searchTerm across all dates and filter POIs that are stops
 @app.route('/search_locations')
 def search_locations():
     searchTerm = request.args.get('searchTerm')
     try:
         with open('processed_locations.json', 'r') as file:
             locations = json.load(file)
-            
+
             # Group all locations into routes
             grouped_routes = groupLocationsByRoute(locations)
-            
-            # Filter routes by search term
+
+            # Compute stops and durations
+            stops_and_durations = compute_stops_and_durations(locations)
+            stop_locations = [stop['stop_location'] for stop in stops_and_durations]
+
+            # Filter routes by search term, including only POIs at stop locations
             filtered_routes = [
-                route for route in grouped_routes 
+                route for route in grouped_routes
                 if any(
-                    searchTerm.lower() in (loc.get('address', '') or '').lower() or 
+                    searchTerm.lower() in (location.get('address', '') or '').lower() or  # Check address of the location
                     any(
-                        searchTerm.lower() in (poi.get('tags', {}).get('name', '') or '').lower() or 
+                        searchTerm.lower() in (poi.get('tags', {}).get('name', '') or '').lower() or
                         searchTerm.lower() in (poi.get('tags', {}).get('amenity', '') or '').lower()
-                        for poi in loc.get('pois', [])
+                        for poi in location.get('pois', [])  # Iterate over POIs in this location
                     )
-                    for loc in route
-                )
+                    for location in route  # Iterate over each location in the route
+                    if location in stop_locations  # Check if location is a stop
+             )   
             ]
-            
+
             return jsonify(filtered_routes)
     except FileNotFoundError:
         return jsonify([])
+    except json.JSONDecodeError:
+        return jsonify({'error': 'Error decoding JSON'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 # New endpoint to fetch stops and durations based on the selected date
 @app.route('/get_stops')
