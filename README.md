@@ -134,7 +134,8 @@ It then needs a server to connect to. Basic http server can be used . I have con
 https://ippocratis.github.io/owntracks/ 
 </details>
 
-### Remarks
+<details>
+<summary>Remarks</summary>
 
 - A copy_files.py is also added in this repo . You could fill the source and destination dir for .rec files and run it periodically in a cronjob.
 
@@ -147,8 +148,10 @@ LOCAL_TZ = pytz.timezone('Europe/Athens')
 Get proper locales for pytz from w.g. [here](https://gist.github.com/heyalexej/8bf688fd67d7199be4a1682b3eec7568)
 
 - Threshold for stops and routes is 20 min . You can adjust it in their functions in the threshold_minutes variable in app.py
+</details>
 
-### Run the app
+<details>
+<summary>Run the app</summary>
 
 - Put preprocess.py app.py requirements.txt the .rec files on root Dir and index.html in templates/index.html then run "python app.py" and open index.html
 
@@ -159,6 +162,8 @@ Or
 Or 
 
 - Simply clone this repo , put your .rec files in the root dir and run "docker compose up --build -d"
+</details>
+
 
 | timeline | routes |
 |--------|--------|
