@@ -170,3 +170,5 @@ Or
 ![timeline](media/timeline.png) | ![routes](media/route.png) |
 | stops | search |
 | ![stops](media/stops.png) | ![search](media/search.png) |
+| home | POIs |
+| ![home](media/home.png) | ![POIs](media/poi.png) |
