@@ -167,8 +167,8 @@ Or
 
 | timeline | routes |
 |--------|--------|
-![timeline](media/timeline.png) | ![routes](media/route.png) |
+![timeline](media/timeline.png) | ![routes](media/routes.png) |
 | stops | search |
-| ![stops](media/stop.png) | ![search](media/search.png) |
+| ![stops](media/stop.png) | ![search](media/searches.png) |
 | home | POIs |
 | ![home](media/home.png) | ![POIs](media/poi.png) |
