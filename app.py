@@ -100,6 +100,30 @@ def search_locations():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# New endpoint to fetch all POIs that are stops across all dates
+@app.route('/get_all_pois_stops')
+def get_all_pois_stops():
+    try:
+        with open('processed_locations.json', 'r') as file:
+            locations = json.load(file)
+            
+            # Compute stops and durations
+            stops_and_durations = compute_stops_and_durations(locations)
+            stop_locations = [stop['stop_location'] for stop in stops_and_durations]
+
+            # Collect all POIs from the stop locations
+            pois = []
+            for location in stop_locations:
+                pois.extend(location.get('pois', []))
+            
+            return jsonify(pois)
+    
+    except FileNotFoundError:
+        return jsonify({'error': 'File not found'}), 404
+    except json.JSONDecodeError:
+        return jsonify({'error': 'Error decoding JSON'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # New endpoint to fetch stops and durations based on the selected date
 @app.route('/get_stops')
@@ -130,7 +154,6 @@ def get_stops():
         return jsonify({'error': 'Error decoding JSON'}), 500
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 
 @app.route('/')
 def index():
