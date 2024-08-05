@@ -9,45 +9,28 @@ Here is a breakdown of each aspect of the app if you want to read more:
 
 ## Backend
 
-On the backend side , app.py Python code defines a Flask web application with several functionalities related to processing and retrieving location data.
+On the backend side , app.py Python code defines a Flask web application with several functionalities related to processing owntracks location data.
 
 Here’s a breakdown:
 
-- Initialization of Flask Application:
+- Takes a list of location records and computes stops where the time difference between consecutive locations exceeds 20 minutes. Returns a list of these stops along with their durations.
+Group Locations by Route (groupLocationsByRoute):
 
-app = Flask(__name__) initializes the Flask web application.
+- Groups locations into routes based on a 20-minute threshold between consecutive timestamps. Returns a list of routes.
+Endpoints:
 
-- Function to Group Locations by Route:
+- /get_locations: Fetches location records from a JSON file filtered by a specified date.
+  
+- /search_locations: Searches for locations by a search term across all dates. Filters by POIs that are stops based on the term and return these routes.
+  
+- /get_all_pois_stops: Retrieves all POIs from locations that are identified as stops.
+  
+- /get_stops: Fetches stops and their durations based on a specific date.
+Error Handling:
 
-The function groupLocationsByRoute(locations) takes a list of locations, each containing a timestamp, and groups them into routes based on a time threshold (30 minutes).
-If the time difference between consecutive locations exceeds the threshold, a new route is started.
+- Serves the index.html template at the root URL.
 
-- Endpoint to Fetch Locations by Date:
-
-The endpoint /get_locations accepts a date parameter (e.g., YYYY-MM-DD format) as a query string.
-It reads processed_locations.json to get the list of locations.
-It filters the locations to return only those whose timestamps start with the specified date.
-
-- Endpoint to Search Locations by Term:
-
-The endpoint /search_locations accepts a searchTerm parameter.
-It reads processed_locations.json to get the list of locations.
-It uses groupLocationsByRoute to group all locations into routes.
-It filters the routes to include only those where any location's address contains the search term (case-insensitive).
-Filters routes where any location or its POIs (Points of Interest) contain the search term in their address, name, or amenity tags.
-
-- Endpoint to fetch stops /get_stops
-
-This stop logic is simple : if location b is more than 30 min appart from location a then location a is a stop.
-Stop duration is the duration in hours:minutes from location a to b.
-This endpoint serves stops,durations,addresses and poi
-
-- Homepage Route:
-
-The endpoint / renders an index.html template, which would be the homepage of the web application.
-Running the Application:
-
-The application runs in debug mode and listens on all available IP addresses (host='0.0.0.0').
+- Needs a processed_locations.json file in the same directory. The Flask app is configured to run on all network interfaces (0.0.0.0).
 </details>
 
 <details>
