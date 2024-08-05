@@ -165,9 +165,9 @@ Or
 </details>
 
 
-| timeline | routes |
+| expanded | routes |
 |--------|--------|
-![timeline](media/timeline.png) | ![routes](media/routes.png) |
+![timeline](media/exp.png) | ![routes](media/routes.png) |
 | stops | search |
 | ![stops](media/stop.png) | ![search](media/searches.png) |
 | home | POIs |
